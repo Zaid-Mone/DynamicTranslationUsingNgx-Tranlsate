@@ -25,3 +25,12 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
+
+## How to start  ??
+** Note here is the docs : https://github.com/ngx-translate/core
+- first : is Create a LocalizationService
+- second : use it in the App-Module
+- third : call it in the App-Component.ts file in the onInit(){}
+** best of luck 
