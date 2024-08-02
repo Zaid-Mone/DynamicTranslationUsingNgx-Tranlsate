@@ -11,5 +11,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\Components\" />
+    <Folder Include="src\app\DTOs\" />
   </ItemGroup>
 </Project>

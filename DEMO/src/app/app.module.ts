@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LocaizationService } from './Services/locaization.service';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
-function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
-}
+import { MissingTranslationErrorHandler } from './errorHandler/MissingTranslationErrorHandler';
+//function HttpLoaderFactory(http: HttpClient) {
+//  return new TranslateHttpLoader(http);
+//}
 
 
 
@@ -21,10 +21,10 @@ function HttpLoaderFactory(http: HttpClient) {
     BrowserModule,
     HttpClientModule,
     TranslateModule.forRoot({
+      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: MissingTranslationErrorHandler }, // for handle the not found localization
       loader: {
         provide: TranslateLoader,
         useClass: LocaizationService,
-        //useFactory : HttpLoaderFactory,
         deps: [HttpClient],
       },
     }),
