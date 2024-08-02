@@ -37,7 +37,26 @@ export class LocaizationService implements OnDestroy {
   }
 
 
-  getTranslation(ModuleID: number = 0, langID: number = 1) {
+  getTranslation(langID: number = 1) {
+
+    const _langId = (langID == null || langID == undefined || isNaN(langID) ? 1 : langID);
+
+    const desiredLanguage = (localStorage.getItem('default_Language') ?? 'ar');
+
+    this._http.get<any>(`myProjectDomain/GetLocalization?LangID=${langID}`).pipe(takeUntil(this.destroy$)).subscribe((response) => {
+      this.translateService.setTranslation(desiredLanguage, response, false);
+      this.translateService.use(desiredLanguage);
+
+    }, (error) => {
+      console.error('Error loading translations:', error);
+    });
+
+  }
+
+
+
+
+  getTranslationWithModuleIDAndLanuageID(ModuleID: number = 0, langID: number = 1) {
 
     const _langId = (langID == null || langID == undefined || isNaN(langID) ? 1 : langID);
 
