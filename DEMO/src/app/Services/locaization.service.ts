@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject, forkJoin, takeUntil } from 'rxjs';
+import { Subject, catchError, forkJoin, map, of, takeUntil } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +55,26 @@ export class LocaizationService implements OnDestroy {
 
 
 
+
+
+  // Function to load translations and return a promise
+  getTranslationWithPromise(langID: number = 1): Promise<any> {
+    const _langId = (langID == null || langID == undefined || isNaN(langID) ? 1 : langID);
+    const desiredLanguage = localStorage.getItem('default_Language') ?? 'ar';
+
+    return this._http.get<any>(`myProjectDomain/GetLocalization?LangID=${_langId}`).pipe(
+      takeUntil(this.destroy$),
+      map(response => {
+        this.translateService.setTranslation(desiredLanguage, response, false);
+        this.translateService.use(desiredLanguage);
+        return response; // Resolve with response data if needed
+      }),
+      catchError(error => {
+        console.error('Error loading translations:', error);
+        return of({}); // Handle errors, return empty object or appropriate fallback
+      })
+    ).toPromise();
+  }
 
   getTranslationWithModuleIDAndLanuageID(ModuleID: number = 0, langID: number = 1) {
 
