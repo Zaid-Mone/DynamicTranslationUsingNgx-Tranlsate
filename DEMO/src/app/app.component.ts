@@ -12,7 +12,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     // for load the localization when the project starts
-    this.locaizationService.getTranslations();
+    //this.locaizationService.getTranslation();
+    //this.locaizationService.getTranslationWithPromises();
+
   }
 
   ngOnDestroy(): void {

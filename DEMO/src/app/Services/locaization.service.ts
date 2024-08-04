@@ -55,6 +55,29 @@ export class LocaizationService implements OnDestroy {
 
 
 
+  // Function to load translations and return a promise
+  getTranslationWithPromises(langID: string = '30e32a11-b297-4f0e-babd-b92a7633ecde'): Promise<any> {
+    const _langId = (langID == null || langID == undefined   ? '30e32a11-b297-4f0e-babd-b92a7633ecde' : langID);
+    const desiredLanguage = localStorage.getItem('default_Language') ?? 'en';
+    
+    return this._http.get<any>(`http://eshop.runasp.net/api/Common/GetResources?langID=${langID}&ModuleID=5`).pipe(
+      takeUntil(this.destroy$),
+      map(response => {
+        this.translateService.setTranslation(desiredLanguage, response, false);
+        this.translateService.use(desiredLanguage);
+        return response; // Resolve with response data if needed
+      }),
+      catchError(error => {
+        console.error('Error loading translations:', error);
+        return of({}); // Handle errors, return empty object or appropriate fallback
+      })
+    ).toPromise();
+  }
+
+
+
+
+
 
 
   // Function to load translations and return a promise
